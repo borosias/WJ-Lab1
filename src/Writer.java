@@ -13,11 +13,14 @@ import java.util.List;
 public class Writer extends Thread{
 
     private List<String> resWords;
-    public synchronized void writer() throws IOException {
+    public void writer() throws IOException {
+        int count = 0;
         if (resWords.isEmpty()){
             resWords.add("Words not found!");
+        } else {
+            count = resWords.size();
         }
-        String res = String.join(", ", resWords).replaceAll("", "") + "\n" + resWords.size() + "\n=====================\n";
+        String res = String.join(", ", resWords).replaceAll("", "") + "\n" + count + "\n=====================\n";
         Path filePath = Paths.get("C:\\Users\\Bohdan\\Desktop\\test\\result.txt");
         if (!Files.exists(filePath)) {
             Files.createFile(filePath);
@@ -44,4 +47,6 @@ public class Writer extends Thread{
     public void run() {
         writer();
     }
+
+
 }

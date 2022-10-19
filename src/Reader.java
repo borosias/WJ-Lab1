@@ -15,8 +15,9 @@ public class Reader extends Thread {
     private File file;
     private String initial;
 
-    Writer w = new Writer();
+
     List<String> resWords = new ArrayList<>();
+
 
     public synchronized void reader() throws IOException {
         List<String> lines;
@@ -24,13 +25,12 @@ public class Reader extends Thread {
         for (String s : lines) {
             String[] words = s.split(" ");
             for (String word : words) {
-                if (word.toLowerCase().startsWith(getInitial())) {
+                if (word.toLowerCase().startsWith(getInitial().toLowerCase())) {
                     resWords.add(word);
                 }
             }
         }
-        w.setResWords(resWords);
-        w.start();
+        Main.adder(resWords);
     }
 
     public String getInitial() {
