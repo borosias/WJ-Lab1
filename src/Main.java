@@ -11,7 +11,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Finder f = new Finder(new File("E:\\TestFolder"), "i");
         f.start();
-        boolean tmp;
         while(f.isAlive()){
             continue;
         }

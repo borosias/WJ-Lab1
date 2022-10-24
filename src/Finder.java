@@ -21,7 +21,7 @@ public class Finder extends Thread {
 
     }
 
-    public synchronized void finder(File folder) throws InterruptedException {
+    public void finder(File folder) throws InterruptedException {
 
         File[] folderEntries = folder.listFiles();
         for (File entry : Objects.requireNonNull(folderEntries)) {
@@ -30,18 +30,16 @@ public class Finder extends Thread {
                 Thread subDir = new Finder(entry, initial);
                 subDir.start();
                 subDir.join();
-
             } else if (entry.getName().endsWith("txt")) {
                 Reader r = new Reader();
                 r.setInitial(initial);
                 r.setFile(entry);
                 r.start();
                 r.join();
-
             }
 
         }
-        Thread.currentThread().stop();
+        Thread.currentThread().interrupt();
 
     }
 
@@ -61,7 +59,8 @@ public class Finder extends Thread {
         private File file;
         private String initial;
 
-        public synchronized void reader() throws IOException {
+        @SneakyThrows
+        public void reader() throws IOException {
             List<String> wordsR = new ArrayList<>();
             List<String> lines;
             lines = Files.readAllLines(getFile().toPath(), Charset.forName("windows-1251"));
@@ -77,7 +76,8 @@ public class Finder extends Thread {
             writer.setResWords(wordsR);
             writer.setFilename(file.getName());
             writer.start();
-            Thread.currentThread().stop();
+            writer.join();
+            Thread.currentThread().interrupt();
         }
 
         public String getInitial() {

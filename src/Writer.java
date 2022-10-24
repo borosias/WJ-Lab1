@@ -31,13 +31,12 @@ public class Writer extends Thread{
                 System.out.println(e);
             }
         }
-        Thread.currentThread().stop();
+        Thread.currentThread().interrupt();
     }
 
     public void setResWords(List<String> resWords) {
         this.resWords = resWords;
     }
-
     @SneakyThrows
     @Override
     public void run() {
